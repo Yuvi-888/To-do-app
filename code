@@ -1,0 +1,200 @@
+// HTML and Css file //
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <title>To-do app</title>
+    <style>
+        * {
+            margin: 0px;
+            padding: 0px;
+            font-family: 'Ubuntu', sans-serif;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 2px solid rgb(2, 75, 58);
+            position: absolute;
+            top: 30%;
+            left: 33%;
+            width: 35%;
+            height: 45%;
+            text-align: center;
+            border-radius: 11px;
+            background: linear-gradient(to right, rgb(83, 129, 156), rgb(114, 227, 150));
+        }
+
+        h2 {
+            display: inline-block;
+            position: absolute;
+            top: 14%;
+            font-size: 20;
+            margin: 5px;
+            right: 195px;
+
+        }
+
+        #input_box {
+            display: flex;
+            padding: 4px;
+            border-radius: 8px;
+            border: 2px solid;
+            padding-left: 7px;
+            font-size: 16px;
+            width: 240px;
+            background: transparent;
+            margin-top: -10%;
+
+        }
+
+        .task_container {
+            display: flex;
+            justify-content: center;
+            text-align: center;
+            align-items: center;
+            position: absolute;
+            top: 50%;
+            width: 80%;
+            font-size: 20px;
+            width: 315px;
+            margin-top: 5px;
+            left: 18%;
+
+
+        }
+
+        span {
+            position: absolute;
+            right: 15px;
+            width: 25px;
+            height: 22px;
+            cursor: pointer;
+        }
+
+        span:hover {
+            border: 1px solid;
+            border-radius: 50%;
+            background-color: rgb(144, 10, 10);
+        }
+
+        ul li.checked {
+            text-decoration: line-through;
+        }
+
+
+        ul li:hover {
+            cursor: pointer;
+        }
+
+        #btn {
+            width: 50px;
+            height: 30px;
+            margin-left: 10px;
+            font-weight: bold;
+            background-color: rgb(44, 90, 74);
+            border: 2px solid;
+            border-radius: 12%;
+            padding: 4px;
+            position: relative;
+            bottom: 27px;
+        }
+
+        #btn:hover {
+            background-color: rgb(3, 88, 58);
+        }
+
+        #input_logo {
+            position: relative;
+            right: 7px;
+            bottom: 26px;
+        }
+
+        ul li {
+            list-style-type: circle;
+        }
+
+        #app_logo {
+            width: 50px;
+            height: 60px;
+            background: transparent;
+            mix-blend-mode: darken;
+            position: relative;
+            bottom: 100px;
+            left: 95px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <img id='app_logo' src="logo.png" alt="">
+        <h2>To-do List</h2>
+
+        <i class="fa fa-pencil-square-o" id="input_logo"></i>
+        <input type="text" id="input_box" placeholder="Enter task">
+        <button id="btn" onclick="add_task()">Add</button>
+
+        <div class="task_container">
+        <ul id="task_list"></ul>
+        </div>
+    </div>
+
+    <script src="index.js"></script>
+    <script src="https://kit.fontawesome.com/ec03c223ab.js" crossorigin="anonymous"></script>
+</body>
+
+</html>
+
+// Javascript file //
+
+let inputbox = document.getElementById('input_box')
+let tasklist = document.getElementById('task_list')
+
+function add_task() {
+    if (inputbox.value === '') {
+        alert(`"Please add a task"`)
+    }
+
+    else {
+        let li = document.createElement('li')
+        li.innerHTML = inputbox.value
+        tasklist.appendChild(li)
+
+
+        let span = document.createElement('span')
+        span.innerHTML = '\u00d7'
+        li.appendChild(span)
+
+    }
+    inputbox.value = ''
+    update_data()
+}
+
+tasklist.addEventListener("click", function (e) {
+    if (e.target.tagName === 'LI') {
+        e.target.classList.toggle('checked')
+        update_data()
+    }
+    else if (e.target.tagName === 'SPAN') {
+        e.target.parentElement.remove()
+        update_data()
+    }
+
+})
+
+function update_data() {
+    localStorage.setItem('data', tasklist.innerHTML)
+}
+
+function get_data() {
+    tasklist.innerHTML = localStorage.getItem('data')
+}
+
+get_data()
